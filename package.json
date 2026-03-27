@@ -1,0 +1,34 @@
+{
+  "name": "open-growth-seo",
+  "version": "1.1.0",
+  "private": true,
+  "scripts": {
+    "lint:js": "node -e \"const fs=require('fs');const vm=require('vm');const files=['assets/js/admin-rest.js','assets/js/dashboard.js','assets/js/editor.js','assets/js/search-appearance.js','assets/js/setup-wizard.js'];files.forEach(f=>new vm.Script(fs.readFileSync(f,'utf8'),{filename:f}));console.log('JS syntax OK');\"",
+    "lint:css": "node -e \"const fs=require('fs');const css=fs.readFileSync('assets/css/admin.css','utf8');let balance=0;for(const ch of css){if(ch==='{')balance++;if(ch==='}')balance--;}if(balance!==0){console.error('CSS brace mismatch');process.exit(1);}console.log('CSS structure OK');\"",
+    "test:e2e": "echo \"Run module checklists in tests/e2e/*.md and final sweep in tests/e2e/smoke.md\"",
+    "test:e2e:search-appearance": "npx playwright test tests/e2e/search-appearance.playwright.spec.js --reporter=line",
+    "test:e2e:settings-webmaster-help": "npx playwright test tests/e2e/settings-webmaster-help.playwright.spec.js --reporter=line",
+    "test:e2e:redirects-workspace": "npx playwright test tests/e2e/redirects-workspace.playwright.spec.js --reporter=line",
+    "test:e2e:dashboard": "npx playwright test tests/e2e/dashboard.playwright.spec.js --reporter=line",
+    "test:e2e:developer-tools": "npx playwright test tests/e2e/developer-tools.playwright.spec.js --reporter=line",
+    "test:e2e:geo-workspace": "npx playwright test tests/e2e/geo-workspace.playwright.spec.js --reporter=line",
+    "test:e2e:sfo-workspace": "npx playwright test tests/e2e/sfo-workspace.playwright.spec.js --reporter=line",
+    "test:e2e:jobs-recovery": "npx playwright test tests/e2e/jobs-recovery.playwright.spec.js --reporter=line",
+    "test:e2e:installation": "npx playwright test tests/e2e/installation.playwright.spec.js --reporter=line",
+    "test:e2e:installation:multisite": "npx playwright test tests/e2e/installation-multisite.playwright.spec.js --reporter=line",
+    "test:e2e:setup-wizard": "npx playwright test tests/e2e/setup-wizard.playwright.spec.js --reporter=line",
+    "test:e2e:editor-runtime": "npx playwright test tests/e2e/editor-runtime.playwright.spec.js --reporter=line",
+    "test:e2e:editor-classic": "npx playwright test tests/e2e/editor-classic.playwright.spec.js --reporter=line",
+    "test:e2e:editor-classic:strict": "node -e \"const env={...process.env,OGS_E2E_REQUIRE_CLASSIC:'1'};const cp=require('child_process');const r=cp.spawnSync('npx',['playwright','test','tests/e2e/editor-classic.playwright.spec.js','--reporter=line'],{stdio:'inherit',shell:true,env});process.exit(r.status||0);\"",
+    "test:e2e:editor-classic:provision": "powershell -ExecutionPolicy Bypass -File tests/runtime/setup-classic-editor.ps1",
+    "test:e2e:editor-classic:ci": "npm run test:e2e:editor-classic:provision && npm run test:e2e:editor-classic:strict",
+    "test:e2e:seo-conflicts": "npx playwright test tests/e2e/seo-conflicts.playwright.spec.js --reporter=line",
+    "test:e2e:seo-env-matrix": "npx playwright test tests/e2e/seo-environment-matrix.playwright.spec.js --reporter=line",
+    "test:e2e:seo-matrix:local": "npm run test:e2e:seo-env-matrix && npm run test:e2e:seo-conflicts",
+    "test:runtime": "powershell -ExecutionPolicy Bypass -File tests/runtime/runtime-check.ps1",
+    "test:runtime:cli": "powershell -ExecutionPolicy Bypass -File tests/runtime/runtime-check.ps1 -CliOnly"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2"
+  }
+}

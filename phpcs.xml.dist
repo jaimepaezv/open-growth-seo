@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<ruleset name="OpenGrowthSEO">
+  <description>PHPCS rules for Open Growth SEO.</description>
+  <arg name="basepath" value="."/>
+  <arg name="colors"/>
+  <arg name="parallel" value="8"/>
+  <arg name="warning-severity" value="0"/>
+
+  <file>./open-growth-seo.php</file>
+  <file>./uninstall.php</file>
+  <file>./includes</file>
+
+  <exclude-pattern>*/vendor/*</exclude-pattern>
+  <exclude-pattern>*/tests/*</exclude-pattern>
+  <exclude-pattern>*/node_modules/*</exclude-pattern>
+
+  <rule ref="WordPress-Core"/>
+  <rule ref="WordPress-Extra"/>
+  <exclude name="Universal.Operators.DisallowShortTernary.Found"/>
+  <exclude name="WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase"/>
+
+  <rule ref="WordPress.Files.FileName.NotHyphenatedLowercase">
+    <severity>0</severity>
+  </rule>
+  <rule ref="WordPress.Files.FileName.InvalidClassFileName">
+    <severity>0</severity>
+  </rule>
+  <rule ref="WordPress.PHP.YodaConditions.NotYoda">
+    <severity>0</severity>
+  </rule>
+  <rule ref="Universal.Operators.DisallowShortTernary.Found">
+    <severity>0</severity>
+  </rule>
+  <rule ref="WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase">
+    <severity>0</severity>
+  </rule>
+
+  <rule ref="Squiz.Commenting">
+    <severity>0</severity>
+  </rule>
+  <rule ref="PEAR.Commenting">
+    <severity>0</severity>
+  </rule>
+  <rule ref="Generic.Commenting">
+    <severity>0</severity>
+  </rule>
+
+  <rule ref="WordPress.WP.I18n.MissingTranslatorsComment">
+    <severity>0</severity>
+  </rule>
+  <rule ref="WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned">
+    <severity>0</severity>
+  </rule>
+  <rule ref="Generic.Formatting.MultipleStatementAlignment.NotSameWarning">
+    <severity>0</severity>
+  </rule>
+
+  <rule ref="PHPCompatibilityWP">
+    <config name="testVersion" value="8.0-"/>
+  </rule>
+</ruleset>

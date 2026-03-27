@@ -1,0 +1,140 @@
+# Changelog
+
+## Unreleased
+- No unreleased entries currently.
+
+## 1.1.0 - 2026-03-27
+- Expanded Schema support with broader `schema.org` coverage for advanced site types and CPT-driven publishing workflows.
+- Added industry-specific CPT schema presets, including sector guidance and safer one-click mapping defaults.
+- Added saved-state JSON-LD runtime preview per post in both Classic Editor and Gutenberg.
+- Added schema CPT mapping import/export so schema defaults can be reused across sites without exporting full plugin settings.
+
+- Added real WP-CLI runtime smoke execution to `tests/runtime/runtime-check.ps1` with Docker Compose auto-detection, local `wp-cli.phar` fallback (`-WpPath`), and dedicated `npm run test:runtime:cli` coverage for live CLI JSON diagnostics.
+- Rebuilt Redirects/404 persistence with table-backed storage (`ogs_seo_redirects`, `ogs_seo_404_events`), activation bootstrap, idempotent legacy migration, and safe fallback to legacy options when tables are unavailable.
+- Added redirect import adapters for Yoast SEO, Rank Math, All in One SEO, and Redirection with dry-run classification, duplicate/conflict/invalid detection, confirmation gating, and merge/replace execution modes.
+- Added redirect import operations to wp-admin and REST (`/redirects/import-sources`, `/redirects/import-dry-run`, `/redirects/import-run`) with strict capability checks and nonce-guarded admin actions.
+- Added 404 retention policy control (`redirect_404_retention_days`) with automatic pruning and clearer storage/migration diagnostics in Redirects & 404 admin UX.
+- Added full Redirects and 404 subsystem with runtime 404-only redirect handling, rule validation, conflict/loop detection, safe admin controls, and REST diagnostics endpoints.
+- Added Redirects & 404 admin screen with guarded add/toggle/delete actions, tracked unresolved 404 paths, remediation shortcuts, and clear safe-default behavior controls.
+- Added redirect and unresolved-404 audit integration with actionable issue traces and safe-fix support for disabling conflicting redirect rules.
+- Added Search Console operational reporting layer with cached API snapshots, resilient stale-fallback behavior, and actionable next-step guidance in Integrations.
+- Expanded internal linking guidance confidence by exposing high/medium/low confidence labels in Classic and Gutenberg editor suggestions.
+- Improved per-content editor UX with field-level guidance text, placeholders, and clearer microcopy in Classic Editor and Gutenberg SEO controls.
+- Standardized admin input handling with typed field rendering (`text/url/number`), reusable contextual help text, and shared attribute rules for safer/clearer form UX.
+- Added server-side normalization warnings for invalid non-empty settings values (URLs, IDs, snippet limits, and date-based directives) so users get explicit feedback when inputs are sanitized.
+- Improved per-content editor controls by switching ambiguous preview limit inputs to constrained field types (number/select) and URL-specific controls for canonical/social image values.
+- Strengthened Setup Wizard validation and behavior by rejecting ecommerce mode without WooCommerce and applying site-type choices to concrete defaults (business/forum/blog).
+- Added cross-screen admin section navigation (`nav-tab` pattern) and per-screen contextual descriptions to reduce navigation friction and cognitive load.
+- Improved admin form accessibility by adding explicit `label for` / `id` bindings across reusable settings fields and grouped checkbox inputs.
+- Improved Setup Wizard usability with resumable-session notice, stronger step progress semantics (`aria-current="step"`), server-side hidden state for private-indexing confirmation, and restart confirmation prompt.
+- Added executable Playwright smoke test for Setup Wizard interaction and validation flow (`tests/e2e/setup-wizard.playwright.spec.js`).
+- Hardened robots.txt module UX by preserving attempted settings on validation errors, avoiding blind resets after failed saves.
+- Added stronger robots validation warnings for `/wp-admin/` without `admin-ajax` allowance and explicit full crawl disallow for GPTBot/OAI-SearchBot on public sites.
+- Expanded robots PHPUnit coverage for managed build output, syntax validation, critical safeguards, and bot-specific preview fallback behavior.
+- Hardened per-content override scope in frontend rendering so URL-level title/meta/robots/social values apply only on singular content requests.
+- Improved editor UX with explicit indexability state messaging in Gutenberg and validated schema override selection in both Gutenberg and Classic metabox.
+- Expanded content-controls smoke coverage for schema sanitizer behavior and singular-guard helper presence.
+- Fixed Search Appearance template token resolution for non-singular contexts so `%%title%%` and `%%excerpt%%` use archive/search/term/author-aware fallbacks instead of post-only assumptions.
+- Expanded Search Appearance PHPUnit coverage for contextual template resolution and sanitization of template/robots defaults.
+- Added executable Playwright smoke for Search Appearance preview interactions in real browser DOM (`tests/e2e/search-appearance.playwright.spec.js`).
+- Hardened Setup Wizard action flow with allow-listed actions, final-step apply enforcement, and persisted admin notices across redirects.
+- Improved Setup Wizard safety defaults by aligning `default_index` with current visibility when `Keep current site visibility` is selected.
+- Expanded Setup Wizard environment detection UX with explicit robots.txt source (physical/virtual) and writability warnings.
+- Improved wizard client-side accessibility for private-visibility confirmation (alert role, focus handling, aria-invalid cleanup).
+- Expanded Setup Wizard PHPUnit smoke coverage for sanitization and dangerous-choice validation behavior.
+- Hardened dashboard overview card logic to avoid false healthy states before initial audit and to surface stale-audit/module-specific caution states.
+- Expanded dashboard live checks to validate runtime Sitemaps, Audit, and Integrations endpoints with explicit loading/success/empty/error UI states.
+- Reworked dashboard live-check JavaScript to safe DOM rendering (no `innerHTML` assignment from runtime payloads) and improved accessibility semantics.
+- Improved dashboard activity relevance by excluding media attachments from recent content updates and reducing low-value queue noise.
+- Expanded Dashboard PHPUnit smoke coverage for issue-priority logic helpers and safe live-check script rendering behavior.
+- Added executable Playwright dashboard smoke test (`tests/e2e/dashboard.playwright.spec.js`) to validate real browser-side live-check rendering.
+- Fixed Setup Wizard apply persistence so selected choices (including `mode=advanced`) are preserved on step 3 apply.
+- Hardened Setup Wizard action handling to recover draft choices when step submissions do not include explicit choice payload.
+- Fixed sitemap rewrite registration during plugin activation by registering sitemap rewrite rules before flushing rewrites.
+- Added IndexNow key-serving fallback via `?ogs_indexnow_key=1` and extended key verification to retry against fallback URL when direct `/<key>.txt` is unavailable.
+- Added executable runtime smoke harness (`tests/runtime/runtime-check.ps1`) that validates admin, REST, frontend SEO output, wizard flow, sitemap/robots, integrations, IndexNow, compatibility, developer tools, and activation lifecycle in a live WordPress runtime.
+- Fixed editor save precedence for `index/follow/robots` so computed robots directives cannot be overwritten by inconsistent posted values during meta persistence.
+- Added strict sanitizers for per-URL `index` and `follow` values and expanded content-controls PHPUnit smoke assertions.
+- Improved setup wizard inline validation UX by removing stale inline error state once private-visibility confirmation is satisfied.
+- Hardened Setup Wizard SEO plugin detection to include plugin-basename checks (single site + multisite network active) to reduce conflict false negatives.
+- Hardened editor meta registration/auth scope by registering per supported public post type, excluding attachments, and enforcing per-post capability checks in REST meta auth callback.
+- Improved block editor UX/performance by loading Open Growth SEO editor assets only for supported post types and enqueuing admin styles where editor preview cards are rendered.
+- Localized setup wizard inline validation copy through script localization to avoid hardcoded non-translatable UI text.
+- Improved developer diagnostics by counting published content across all public post types instead of only `post`.
+- Removed unused admin JavaScript file and updated JS lint script inputs to match active assets.
+- Expanded content-controls PHPUnit smoke coverage with sanitizer behavior assertions and editor hardening surface checks.
+- Cross-cutting hardening pass for security/UX/performance/accessibility/release readiness across plugin modules.
+- Added import payload size safeguards for admin and REST developer-tools imports.
+- Added privacy exporter/eraser callbacks and expanded privacy policy guidance.
+- Expanded admin asset loading to all Open Growth SEO screens while keeping scope limited to plugin pages.
+- Improved wp-admin focus visibility and readability in plugin UI tables/forms.
+- Replaced placeholder JS/CSS lint scripts with executable syntax/structure checks.
+- Updated `bin/qa.sh` to include frontend lint checks after PHP QA.
+- Added release-readiness document and expanded global smoke checklist.
+- Added developer tools module: diagnostics, secure settings export/import, safe reset, and bounded/redacted debug logs.
+- Added developer tools REST endpoints (`/dev-tools/diagnostics|export|import|reset|logs|logs/clear`) and WP-CLI commands (`wp ogs-seo tools ...`).
+- Added wp-admin Tools UX for diagnostic mode, debug log controls, export/import workflow, and reset/clear-log actions.
+- Implemented compatibility and importer module for Yoast/Rank Math/AIOSEO with active-plugin detection, safe coexistence notice scoping, dry run reports, controlled import, rollback snapshot, and Tools UI workflow.
+- Added compatibility automation interfaces via REST (`/compatibility/status|dry-run|import|rollback`) and WP-CLI (`wp ogs-seo compatibility ...`).
+- Added compatibility smoke test coverage and uninstall cleanup for import state options.
+- Added WooCommerce SEO module hardening: Woo-specific archive robots defaults, schema source mode (`native` vs `ogs` takeover), and minimum product content threshold controls.
+- Expanded Product schema generation in OGS takeover mode with variable-product offers, stock availability mapping, aggregate ratings/reviews, and shipping/return policy references when configured.
+- Added WooCommerce audit improvements for variable-product integrity, price completeness, policy-page detection, and configurable thin-content checks.
+- Added WooCommerce module smoke coverage (phpunit + e2e checklist) and setup wizard sane defaults for ecommerce sites.
+- Rebuilt Search Appearance previews with live SERP/social rendering, schema eligibility hints, realistic token replacement, and honest “indicative preview” microcopy.
+- Added editor-level (Gutenberg + Classic metabox) real-time preview consistency for SEO/social fields and schema override hinting.
+- Rebuilt technical audit module with full/incremental scans, runtime scan state, issues cache, ignore/restore with reason, and richer traceable issue schema.
+- Added audit management UI improvements (active vs ignored findings, full rescan action, issue trace and source display).
+- Added audit REST endpoints for status/ignore/unignore and expanded WP-CLI audit commands for status/incremental/ignore workflows.
+- Added audit module regression smoke coverage and audit e2e checklist.
+- Rebuilt IndexNow pipeline with key generation/verification, queue deduplication, batch sending, retry backoff, rate limiting, bounded failure history, and admin/REST/CLI diagnostics.
+- Implemented external integration manager with optional, decoupled connectors for Google Search Console, Bing Webmaster Tools, and GA4 helper.
+- Added secure integration credential store, connection state tracking, guarded test/disconnect admin actions, REST diagnostics endpoints, and WP-CLI integration commands.
+- Rebuilt GEO module with measurable diagnostics for crawl visibility, text visibility, schema-text consistency, citability, semantic clarity, entity signals, freshness, and internal discoverability.
+- Added GEO diagnostics in Bots & Crawlers admin, REST (/ogs-seo/v1/geo/analyze), WP-CLI (wp ogs-seo geo analyze), and expanded GEO audit checks.
+- Rebuilt AEO module with structured analysis (answer-first, extractable structures, intent coverage, follow-up questions, entity/fact/attribute signals, non-text dependency, and internal-link guidance).
+- Integrated AEO outputs in editor and Content Controls screen with actionable recommendations and non-technical UX.
+- Added AEO diagnostics via REST (/ogs-seo/v1/aeo/analyze), WP-CLI (wp ogs-seo aeo analyze), and expanded audit checks.
+- Rebuilt JSON-LD schema engine with contextual type resolution, validation, deduplication, extensibility hooks, and conservative anti-garbage emission rules.
+- Added support paths for Organization, LocalBusiness, WebSite, WebPage, BreadcrumbList, Article/BlogPosting/NewsArticle, Product/Offer/AggregateRating, FAQPage, ProfilePage, DiscussionForumPosting, QAPage, VideoObject, Event, JobPosting, Recipe, SoftwareApplication, Dataset, and paywall signals when justified.
+- Added schema diagnostics in wp-admin, REST (/ogs-seo/v1/schema/inspect), WP-CLI (wp ogs-seo schema status), and audit checks.
+- Added full hreflang module with alternate resolution, x-default control, code/url validation, provider detection (Polylang/WPML), canonical-coherence safeguards, and audit reporting.
+- Added hreflang status tooling in Search Appearance, REST (/ogs-seo/v1/hreflang/status), and WP-CLI (wp ogs-seo hreflang status).
+- Hardened XML Sitemap engine with smarter cache invalidation hooks, canonical/noindex exclusion consistency, conditional image namespace output, and improved truthful lastmod selection.
+- Added sitemap runtime audit check plus REST/CLI inspection diagnostics for production debugging.
+- Implemented robust canonical resolver with contextual defaults, URL override sanitization, pagination-aware handling, and query normalization to reduce duplicate variants.
+- Added canonical audit checks for invalid URLs, unreachable internal targets, and noindex/canonical conflicts, plus canonical smoke coverage.
+- Implemented complete meta robots and snippet controls stack with precedence (global > post type > URL overrides), including nosnippet, max preview directives, noarchive, notranslate, unavailable_after, and X-Robots-Tag output.
+- Added viable data-nosnippet support by HTML id targeting in singular content rendering and expanded smoke coverage for directive consistency.
+- Implemented full robots.txt management module with managed/expert modes, syntax validation, bot preview, safeguards, and safe defaults restore.
+- Added explicit GPTBot and OAI-SearchBot controls with virtual robots output and physical-file warning handling.
+- Added robots module smoke tests and validation workflow documentation.
+- Expanded per-content SEO controls for Classic and Gutenberg: index/follow, snippet controls, social overrides, schema override, and snippet preview.
+- Added secure per-post precedence behavior and social meta output integration in frontend rendering.
+- Added content-controls smoke test coverage and save-safety checks.
+- Implemented full Search Appearance module: global templates, per-post-type defaults, archive/taxonomy robots defaults, snippet preview, and frontend integration.
+- Added safe-mode collision handling to suppress duplicate meta output when another SEO plugin is active.
+- Added smoke tests for Search Appearance frontend output and settings persistence.
+- Added full Setup Wizard module with real environment detection, step flow, draft resume, restart, and secure apply.
+- Added safe visibility confirmation for private mode and enforced safe mode when other SEO plugins are active.
+- Added setup wizard inline validation script and dedicated smoke tests.
+- Added production-grade dashboard module with real SEO/AEO/GEO status cards, issue prioritization, recommendations, recent activity, and quick actions.
+- Added nonce-protected dashboard audit action and live status checks for sitemap diagnostics.
+- Scoped dashboard JS loading to dashboard screen for lower admin overhead.
+- Improved XML Sitemap module with paginated sitemap files, stronger post type validation, cache versioning, and noindex-aware inclusion logic.
+- Added Sitemap module diagnostics in WP-CLI (`wp ogs-seo sitemap status|flush`) and REST (`GET /wp-json/ogs-seo/v1/sitemaps/status`).
+- Added sitemap post type selector in wp-admin Sitemaps screen.
+- Fixed settings persistence behavior to avoid resetting non-submitted options when saving partial forms.
+
+## 1.0.0 - 2026-03-16
+- Initial release of Open Growth SEO.
+- Added modular architecture and core UX screens.
+- Added per-post SEO controls for Gutenberg and Classic.
+- Added frontend meta/canonical/robots output.
+- Added robots.txt manager with GPTBot and OAI-SearchBot controls.
+- Added XML sitemap index and post-type sitemap generation.
+- Added JSON-LD schema output for key entities.
+- Added AEO/GEO checks and technical audit engine.
+- Added optional IndexNow integration with queue.
+- Added REST routes and WP-CLI command.
+- Added uninstall cleanup controls and documentation set.
